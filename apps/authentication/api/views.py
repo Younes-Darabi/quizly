@@ -1,6 +1,6 @@
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework.views import APIView, Response, status
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import AllowAny
 from django.contrib.auth.models import User
 
 from .serializers import RegisterSerializer
@@ -21,13 +21,6 @@ class RegisterView(APIView):
 
 class LogoutView(APIView):
     pass
-
-
-class HelloView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        return Response({'message': 'Hello World'})
 
 
 class LoginView(TokenObtainPairView):
