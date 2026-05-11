@@ -15,11 +15,12 @@ class Question(models.Model):
 
 class Quiz(models.Model):
 
-    title = models.CharField(max_length=100)
-    description = models.TextField()
+    title = models.CharField(max_length=100, blank=True)
+    description = models.TextField(blank=True)
+    video_url = models.URLField(max_length=200, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    video_url = models.CharField(max_length=200)
+
     questions = models.ManyToManyField(Question, related_name='questions')
     
     def __str__(self):
