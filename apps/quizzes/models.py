@@ -21,7 +21,7 @@ class Quiz(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    questions = models.ManyToManyField(Question, related_name='questions')
+    questions = models.ManyToManyField(Question, related_name='quizzes')
     
     def __str__(self):
         return self.title

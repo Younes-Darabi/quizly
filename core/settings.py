@@ -2,7 +2,7 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
-#JWT-Settings
+# JWT-Settings
 from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -31,7 +31,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-        
+
     # Third-party packages
     'rest_framework',
     'rest_framework_simplejwt',
@@ -52,10 +52,20 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# CORS_ALLOWED_ORIGINS = [ #D
-#   'http://quizly.younes-darabi.de',
-#   'https://quizly.younes-darabi.de',
-# ]
+CSRF_TRUSTED_ORIGINS = [
+    'http://127.0.0.1:5500',
+    'http://localhost:5500',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    'http://127.0.0.1:5500',
+    'http://localhost:5500',
+
+    #   'http://quizly.younes-darabi.de',
+    #   'https://quizly.younes-darabi.de',
+]
+
+CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'core.urls'
 
@@ -138,8 +148,8 @@ REST_FRAMEWORK = {
 }
 
 
-#JWT-Settings
+# JWT-Settings
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=1) 
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=365),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1)
 }
