@@ -20,7 +20,14 @@ class RegisterView(APIView):
 
 
 class LogoutView(APIView):
-    pass
+    def post(self, request):
+        response = Response(
+            {"detail": "Log-Out successfully! All Tokens will be deleted. Refresh token is now invalid."},
+            status=status.HTTP_200_OK
+        )
+        response.delete_cookie("access_token")
+        response.delete_cookie("refresh_token")
+        return response
 
 
 class LoginView(TokenObtainPairView):
