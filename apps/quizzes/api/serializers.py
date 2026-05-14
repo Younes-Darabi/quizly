@@ -13,7 +13,6 @@ class QuestionSerializer(serializers.ModelSerializer):
 
 class QuizSerializer(serializers.ModelSerializer):
     questions = QuestionSerializer(many=True, read_only=True)
-
     url = serializers.URLField(write_only=True)
 
     class Meta:

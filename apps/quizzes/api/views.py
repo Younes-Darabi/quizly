@@ -7,25 +7,30 @@ import json
 from ..models import Question, Quiz
 from .serializers import QuizSerializer
 from .services import Services
+from .permissions import IsOwner
 
 
 class QuizzesView(viewsets.ModelViewSet):
 
     queryset = Quiz.objects.all()
     serializer_class = QuizSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated, IsOwner]
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         URL = serializer.validated_data.get('url')
+
+        if "youtu.be/" not in URL and "youtube.com/watch?v=" not in URL:
+            return Response({"url": "YouTube link is not valid"}, status=status.HTTP_400_BAD_REQUEST)
+        
         URL = Services.make_standard_link(URL)
         AUDIO = Services.download_file_from_youtube(URL)
         TEXT = Services.convert_audio_to_text(AUDIO)
         response = Services.make_questions_with_ai(TEXT)
         quiz_content = response.text
         quiz_data = json.loads(quiz_content)
-        quiz = serializer.save()
+        quiz = serializer.save(user=request.user)
         quiz.video_url = URL
         for q in quiz_data.get("questions", []):
             question = Question.objects.create(

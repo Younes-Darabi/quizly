@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Question(models.Model):
@@ -22,6 +23,7 @@ class Quiz(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     questions = models.ManyToManyField(Question, related_name='quizzes')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_quizzes")
     
     def __str__(self):
         return self.title
