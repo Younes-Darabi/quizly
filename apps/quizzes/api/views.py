@@ -1,11 +1,11 @@
 from rest_framework import viewsets
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 import json
 
 from ..models import Question, Quiz
-from .serializers import QuizSerializer
+from .serializers import QuizSerializer, QuizPostSerializer
 from .services import Services
 from .permissions import IsOwner
 
@@ -16,8 +16,12 @@ class QuizzesView(viewsets.ModelViewSet):
     Only authenticated users can access their own quizzes.
     """
     queryset = Quiz.objects.all()
-    serializer_class = QuizSerializer
     permission_classes = [IsAuthenticated, IsOwner]
+
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return QuizPostSerializer
+        return QuizSerializer 
 
     def create(self, request, *args, **kwargs):
         """
