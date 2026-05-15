@@ -5,7 +5,7 @@ from rest_framework import status
 import json
 
 from ..models import Question, Quiz
-from .serializers import QuizSerializer, QuizPostSerializer
+from .serializers import QuizGetSerializer, QuizPostSerializer
 from .services import Services
 from .permissions import IsOwner
 
@@ -21,7 +21,7 @@ class QuizzesView(viewsets.ModelViewSet):
     def get_serializer_class(self):
         if self.request.method == 'POST':
             return QuizPostSerializer
-        return QuizSerializer 
+        return QuizGetSerializer 
 
     def create(self, request, *args, **kwargs):
         """
@@ -55,5 +55,5 @@ class QuizzesView(viewsets.ModelViewSet):
             quiz.questions.add(question)
         quiz.save()
 
-        output_serializer = QuizSerializer(quiz)
+        output_serializer = QuizPostSerializer(quiz)
         return Response(output_serializer.data, status=status.HTTP_201_CREATED)

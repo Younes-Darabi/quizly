@@ -36,7 +36,7 @@ class QuizPostSerializer(serializers.ModelSerializer):
         return super().create(validated_data)
 
 
-class QuestionSerializer(serializers.ModelSerializer):
+class QuestionGetSerializer(serializers.ModelSerializer):
     """
     Serializer for Question model.
     """
@@ -46,13 +46,13 @@ class QuestionSerializer(serializers.ModelSerializer):
                   'answer']
 
 
-class QuizSerializer(serializers.ModelSerializer):
+class QuizGetSerializer(serializers.ModelSerializer):
     """
     Serializer for Quiz model.
     Includes nested questions.
     Accepts a YouTube URL as input to generate quizzes.
     """
-    questions = QuestionSerializer(many=True, read_only=True)
+    questions = QuestionGetSerializer(many=True, read_only=True)
     url = serializers.URLField(write_only=True)
 
     class Meta:
