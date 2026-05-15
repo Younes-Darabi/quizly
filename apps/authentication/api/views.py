@@ -7,9 +7,17 @@ from .serializers import RegisterSerializer
 
 
 class RegisterView(APIView):
+    """
+    API endpoint for user registration.
+    Anyone can access this endpoint to create a new account.
+    """
     permission_classes = [AllowAny]
 
     def post(self, request):
+        """
+        Handle POST request to register a new user.
+        Validates the data using RegisterSerializer.
+        """
         serializer = RegisterSerializer(data=request.data)
 
         if serializer.is_valid():
@@ -20,6 +28,11 @@ class RegisterView(APIView):
 
 
 class LogoutView(APIView):
+    """
+    API endpoint to log out a user.
+    Deletes the access and refresh token cookies from the client.
+    """
+
     def post(self, request):
         response = Response(
             {"detail": "Log-Out successfully! All Tokens will be deleted. Refresh token is now invalid."},
@@ -31,8 +44,16 @@ class LogoutView(APIView):
 
 
 class LoginView(TokenObtainPairView):
+    """
+    API endpoint for user login.
+    Extends SimpleJWT TokenObtainPairView to set access and refresh tokens as cookies.
+    """
 
     def post(self, request, *args, **kwargs):
+        """
+        Handle POST request for login.
+        Returns user details and sets JWT tokens in cookies.
+        """
         response = super().post(request, *args, **kwargs)
         refresh = response.data.get('refresh')
         access = response.data.get('access')
@@ -68,7 +89,9 @@ class LoginView(TokenObtainPairView):
 
 
 class TokenRefreshView(TokenRefreshView):
-
+    """
+    API endpoint to refresh the access token using refresh token from cookies.
+    """
     def post(self, request, *args, **kwargs):
         refresh_token = request.COOKIES.get('refresh_token')
 

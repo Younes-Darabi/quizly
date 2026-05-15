@@ -11,19 +11,29 @@ from .permissions import IsOwner
 
 
 class QuizzesView(viewsets.ModelViewSet):
-
+    """
+    ViewSet to handle CRUD operations for Quizzes.
+    Only authenticated users can access their own quizzes.
+    """
     queryset = Quiz.objects.all()
     serializer_class = QuizSerializer
     permission_classes = [IsAuthenticated, IsOwner]
 
     def create(self, request, *args, **kwargs):
+        """
+        Handle POST request to create a new Quiz from a YouTube URL.
+        1. Validates URL.
+        2. Downloads audio and converts it to text.
+        3. Generates questions using AI.
+        4. Creates Quiz and Question objects in the database.
+        """
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         URL = serializer.validated_data.get('url')
 
         if "youtu.be/" not in URL and "youtube.com/watch?v=" not in URL:
             return Response({"url": "YouTube link is not valid"}, status=status.HTTP_400_BAD_REQUEST)
-        
+
         URL = Services.make_standard_link(URL)
         AUDIO = Services.download_file_from_youtube(URL)
         TEXT = Services.convert_audio_to_text(AUDIO)

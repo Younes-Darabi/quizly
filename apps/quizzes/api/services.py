@@ -5,8 +5,16 @@ from google import genai
 
 
 class Services:
-
+    """
+    Utility class providing helper functions for:
+    - YouTube audio download
+    - Audio-to-text conversion
+    - AI question generation
+    """
     def make_standard_link(URL):
+        """
+        Standardizes YouTube URLs to the format: https://www.youtube.com/watch?v=VIDEO_ID
+        """
         if "youtu.be/" in URL:
             video_id = URL.split("/")[-1].split("?")[0]
         elif "youtube.com/watch?v=" in URL:
@@ -16,6 +24,10 @@ class Services:
         return f"https://www.youtube.com/watch?v={video_id}"
 
     def download_file_from_youtube(URL):
+        """
+        Downloads audio from a YouTube video and returns the file path.
+        Uses yt_dlp library.
+        """
         os.makedirs("/audio_file/", exist_ok=True)
         tmp_filename = "/audio_file/audio.%(ext)s"
         ydl_opts = {
@@ -29,12 +41,20 @@ class Services:
             return ydl.prepare_filename(info)
 
     def convert_audio_to_text(AUDIO):
+        """
+        Converts downloaded audio file to text using Whisper model.
+        Deletes audio file after transcription.
+        """
         model = whisper.load_model("turbo")
         result = model.transcribe(AUDIO)
         os.remove(AUDIO)
         return (result["text"])
 
     def make_questions_with_ai(TEXT):
+        """
+        Generates 10 quiz questions from transcript using Google GenAI.
+        Returns AI response object containing JSON-formatted quiz.
+        """
         prompt = f"""
             Based on the following transcript, generate a quiz in valid JSON format.
 

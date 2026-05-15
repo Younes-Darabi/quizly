@@ -3,6 +3,10 @@ from django.contrib.auth.models import User
 
 
 class RegisterSerializer(serializers.ModelSerializer):
+    """
+    Serializer for user registration.
+    Includes password confirmation validation and email uniqueness check.
+    """
     confirmed_password = serializers.CharField(write_only=True)
 
     class Meta:
@@ -11,17 +15,26 @@ class RegisterSerializer(serializers.ModelSerializer):
         extra_kwargs = {'password': {'write_only': True}}
 
     def validate_confirmed_password(self, value):
+        """
+        Ensure that password and confirmed_password match.
+        """
         password = self.initial_data.get('password')
         if password and value and password != value:
             raise serializers.ValidationError('Passwords do not match')
         return value
 
     def validate_email(self, value):
+        """
+        Ensure that the email is unique in the system.
+        """
         if User.objects.filter(email=value).exists():
             raise serializers.ValidationError('Email already exists')
         return value
 
     def save(self):
+        """
+        Create and save a new User instance with a hashed password.
+        """
         password = self.validated_data['password']
 
         account = User(

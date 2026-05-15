@@ -3,7 +3,9 @@ from django.contrib.auth.models import User
 
 
 class Question(models.Model):
-
+    """
+    Model representing a single quiz question.
+    """
     question_title = models.CharField(max_length=100)
     question_options = models.JSONField(default=list)
     answer = models.CharField(max_length=100)
@@ -15,7 +17,10 @@ class Question(models.Model):
 
 
 class Quiz(models.Model):
-
+    """
+    Model representing a quiz.
+    A quiz belongs to a user and can contain multiple questions.
+    """
     title = models.CharField(max_length=100, blank=True)
     description = models.TextField(blank=True)
     video_url = models.URLField(max_length=200, blank=True)
