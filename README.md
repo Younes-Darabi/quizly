@@ -37,7 +37,7 @@ Quizly ist ein leistungsstarkes Django REST Framework Backend für die Erstellun
         cd quizly
 
 
-3. Set up a Virtual Environment:
+2. Set up a Virtual Environment:
 
         python -m venv venv
    
@@ -49,21 +49,16 @@ Quizly ist ein leistungsstarkes Django REST Framework Backend für die Erstellun
    
         source venv/bin/activate
 
-3. Environment Configuration:
-   Create a `.env` file in the root directory and add your secret key and google api key:
-   ```env
-   SECRET_KEY=your_secret_key_here
-   GOOGLE_API_KEY=your-google-api-here
 
-4. Install Dependencies:
+3. Install Dependencies:
 
         pip install -r requirements.txt
 
-5. Apply Database Migrations:
+4. Apply Database Migrations:
 
         python manage.py migrate
 
-6. Run the Development Server:
+5. Run the Development Server:
 
         python manage.py runserver
 
