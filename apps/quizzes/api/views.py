@@ -15,8 +15,10 @@ class QuizzesView(viewsets.ModelViewSet):
     ViewSet to handle CRUD operations for Quizzes.
     Only authenticated users can access their own quizzes.
     """
-    queryset = Quiz.objects.all()
     permission_classes = [IsAuthenticated, IsOwner]
+
+    def get_queryset(self):
+        return Quiz.objects.filter(user=self.request.user)
 
     def get_serializer_class(self):
         if self.request.method == 'POST':
