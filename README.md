@@ -56,7 +56,7 @@ Quizly ist ein leistungsstarkes Django REST Framework Backend für die Erstellun
 
 4. Configure Environment Variables:
 
-        cp .env .env.template
+        cp .env.template .env
 
 5. Apply Database Migrations:
 
