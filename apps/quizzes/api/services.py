@@ -45,7 +45,7 @@ class Services:
         Converts downloaded audio file to text using Whisper model.
         Deletes audio file after transcription.
         """
-        model = whisper.load_model("turbo")
+        model = whisper.load_model("base") # turbo tiny
         result = model.transcribe(AUDIO)
         os.remove(AUDIO)
         return (result["text"])
@@ -88,3 +88,4 @@ class Services:
             model="gemini-3-flash-preview",
             contents=prompt
         )
+    

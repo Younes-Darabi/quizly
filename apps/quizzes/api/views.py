@@ -47,6 +47,8 @@ class QuizzesView(viewsets.ModelViewSet):
         quiz_content = response.text
         quiz_data = json.loads(quiz_content)
         quiz = serializer.save(user=request.user)
+        quiz.title = quiz_data.get("title")
+        quiz.description = quiz_data.get("description")
         quiz.video_url = URL
         for q in quiz_data.get("questions", []):
             question = Question.objects.create(
