@@ -54,11 +54,15 @@ Quizly ist ein leistungsstarkes Django REST Framework Backend für die Erstellun
 
         pip install -r requirements.txt
 
-4. Apply Database Migrations:
+4. Configure Environment Variables:
+
+        cp .env .env.template
+
+5. Apply Database Migrations:
 
         python manage.py migrate
 
-5. Run the Development Server:
+6. Run the Development Server:
 
         python manage.py runserver
 
