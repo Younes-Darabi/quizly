@@ -44,7 +44,11 @@ class QuizzesView(viewsets.ModelViewSet):
         AUDIO = Services.download_file_from_youtube(URL)
         TEXT = Services.convert_audio_to_text(AUDIO)
         response = Services.make_questions_with_ai(TEXT)
-        quiz_content = response.text
+        quiz_content = response.candidates[0].content.parts[0].text
+
+        if quiz_content.startswith("```json"):
+            quiz_content = quiz_content.strip("```json").strip("```").strip()
+
         quiz_data = json.loads(quiz_content)
         quiz = serializer.save(user=request.user)
         quiz.title = quiz_data.get("title")
@@ -58,6 +62,6 @@ class QuizzesView(viewsets.ModelViewSet):
             )
             quiz.questions.add(question)
         quiz.save()
-
+        
         output_serializer = QuizPostSerializer(quiz)
         return Response(output_serializer.data, status=status.HTTP_201_CREATED)

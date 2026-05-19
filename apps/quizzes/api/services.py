@@ -78,6 +78,7 @@ class Services:
             - Only one correct answer is allowed per question, and it must be present in 'question_options'.
             - The output must be valid JSON and parsable as-is (e.g., using Python's json.loads).
             - Do not include explanations, comments, or any text outside the JSON.
+            ```json -> never use this only give back json without
 
             Transcript:
             {TEXT}
@@ -85,7 +86,7 @@ class Services:
         api_key = os.getenv("GOOGLE_API_KEY")
         client = genai.Client(api_key=api_key)
         return client.models.generate_content(
-            model="gemini-3-flash-preview",
+            model="gemini-2.5-flash",
             contents=prompt
         )
     
